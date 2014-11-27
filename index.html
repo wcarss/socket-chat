@@ -25,14 +25,20 @@
         $('#m').val('');
         return false;
       });
-      socket.on('chat message', function(msg) {
-        console.log("Chat message '" + msg +"' received! Appending to Display!");
-        $('#messages').append($('<li>').text(msg));
+      socket.on('identify', function(incoming) {
+        console.log('identified as: ' + incoming.id);
+        console.log('using name: ' + incoming.name);
+        console.log(incoming);
       });
-      socket.on('connect', function() {
-        console.log("Connect received! Emitting 'new user'!");
-        socket.emit('new user');
+      socket.on('chat message', function(incoming) {
+        console.log("Chat message '" + incoming.message +"' received! Appending to Display!");
+        console.log("Message was from " + incoming.user.name + ", with id: " + incoming.user.id);
+        $('#messages').append($('<li>').text(incoming.user.name + ": " + incoming.message));
       });
+      /*socket.on('connect', function(incoming) {
+        console.log("Connect received! New user is named " + incoming.name + ", has id " + incoming.id);
+        //socket.emit('new user');
+      });*/
       socket.on('new user', function() {
         console.log("New User received! Appending connect message to display!");
         $('#messages').append($('<li>').text("User connected."));
