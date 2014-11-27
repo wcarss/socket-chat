@@ -21,20 +21,24 @@
       var socket = io();
       $('form').submit(function() {
         socket.emit('chat message', $('#m').val());
-        console.log($('#m').val());
+        console.log('Form Submitted! Emitting "' + $('#m').val() + '" as a chat message!');
         $('#m').val('');
         return false;
       });
       socket.on('chat message', function(msg) {
+        console.log("Chat message '" + msg +"' received! Appending to Display!");
         $('#messages').append($('<li>').text(msg));
       });
       socket.on('connect', function() {
+        console.log("Connect received! Emitting 'new user'!");
         socket.emit('new user');
       });
       socket.on('new user', function() {
+        console.log("New User received! Appending connect message to display!");
         $('#messages').append($('<li>').text("User connected."));
       });
       socket.on('disconnect', function(msg) {
+        console.log("Disconnect received! Appending disconnect message to display!");
         $('#messages').append($('<li>').text(msg));
       });
     });
