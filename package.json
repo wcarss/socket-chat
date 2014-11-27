@@ -4,6 +4,7 @@
   "description": "example chat application",
   "dependencies": {
     "express": "^4.10.2",
+    "moment": "^2.8.4",
     "socket.io": "^1.2.1"
   }
 }
