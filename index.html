@@ -42,6 +42,10 @@
         console.log("Message was from " + incoming.user.name + ", with id: " + incoming.user.id);
         $('#messages').append($('<li>').text(incoming.user.name + ": " + incoming.message));
       });
+
+      socket.on('name change', function(incoming) {
+        $('#messages').append($('<li>').text(incoming.old_name + " is now known as " + incoming.new_name));
+      });
     });
   </script>
   <ul id="messages"></ul>

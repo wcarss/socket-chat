@@ -33,7 +33,6 @@ io.on('connection', function(socket) {
   console.log("emitting 'identify' for socket " + socket.id);
   socket.emit('identify', user);
   console.log("broadcasting 'connect' for socket " + socket.id);
-  //socket.broadcast.emit("connect", user);
   sockets_by_name[user['name']] = socket.id;
   sockets[socket.id] = user;
   console.log("Sockets I know of after connect:");
@@ -54,12 +53,22 @@ io.on('connection', function(socket) {
 
   socket.on('chat message', function(msg) {
     console.log('chat message "' + msg + '" received from socket ' + socket.id + '; emitting chat message.');
-    io.emit(
-      'chat message', {
-        message: msg,
-        user: sockets[socket.id]
-      }
-    );
+    var name_command = "/name ";
+    if (msg.slice(0, name_command.length) == name_command && msg.length > name_command.length) {
+      var new_name = msg.slice(name_command.length, msg.length);
+      var old_name = sockets[socket.id]['name'];
+      delete sockets_by_name[old_name];
+      sockets_by_name[new_name] = socket.id;
+      sockets[socket.id]['name'] = new_name;
+      io.emit('name change', {'old_name': old_name, 'new_name': new_name});
+    } else {
+      io.emit(
+        'chat message', {
+          message: msg,
+          user: sockets[socket.id]
+        }
+      );
+    }
   });
 });
 
