@@ -19,9 +19,13 @@ app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
+function generate_name() {
+  return "guest" + Math.floor(Math.random() * 200);
+}
+
 io.on('connection', function(socket) {
   var user = {
-    name: 'FakeName',
+    name: generate_name(),
     other_data: 'Garbage',
     id: socket.id
   };
