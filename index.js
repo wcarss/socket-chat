@@ -36,12 +36,20 @@ io.on('connection', function(socket) {
   //socket.broadcast.emit("connect", user);
   sockets_by_name[user['name']] = socket.id;
   sockets[socket.id] = user;
+  console.log("Sockets I know of after connect:");
+  console.log(sockets);
+  console.log("Names I know of after connect:");
+  console.log(sockets_by_name);
 
   socket.on('disconnect', function() {
     console.log('"disconnect" received from client ' + socket.id + '; emitting "disconnect".');
-    io.emit("disconnect", "User " + sockets[socket.id]['name'] + "disconnected.");
-    //delete sockets_by_name[sockets[socket.id]['name']];
-    //delete sockets[socket.id];
+    io.emit("disconnect", "User " + sockets[socket.id]['name'] + " disconnected.");
+    delete sockets_by_name[sockets[socket.id]['name']];
+    delete sockets[socket.id];
+    console.log("Sockets I know of after disconnect:");
+    console.log(sockets);
+    console.log("Names I know of after disconnect:");
+    console.log(sockets_by_name);
   });
 
   socket.on('chat message', function(msg) {
