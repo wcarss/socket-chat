@@ -53,11 +53,6 @@ io.on('connection', function(socket) {
       }
     );
   });
-
-  socket.on('new user', function() {
-    console.log('"new user" received from socket ' + socket.id + '; emitting "new user".');
-    io.emit('new user', 'User connected');
-  });
 });
 
 http.listen(3000, function() {

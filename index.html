@@ -35,14 +35,6 @@
         console.log("Message was from " + incoming.user.name + ", with id: " + incoming.user.id);
         $('#messages').append($('<li>').text(incoming.user.name + ": " + incoming.message));
       });
-      /*socket.on('connect', function(incoming) {
-        console.log("Connect received! New user is named " + incoming.name + ", has id " + incoming.id);
-        //socket.emit('new user');
-      });*/
-      socket.on('new user', function() {
-        console.log("New User received! Appending connect message to display!");
-        $('#messages').append($('<li>').text("User connected."));
-      });
       socket.on('disconnect', function(msg) {
         console.log("Disconnect received! Appending disconnect message to display!");
         $('#messages').append($('<li>').text(msg));
