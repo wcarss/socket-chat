@@ -43,6 +43,10 @@
         $('#messages').append($('<li>').text(incoming.user.name + ": " + incoming.message));
       });
 
+      socket.on('new user', function(incoming) {
+        $('#messages').append($('<li>').text(incoming.name + " has joined the chat."));
+      });
+
       socket.on('name change', function(incoming) {
         $('#messages').append($('<li>').text(incoming.old_name + " is now known as " + incoming.new_name));
       });

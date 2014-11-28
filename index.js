@@ -32,7 +32,8 @@ io.on('connection', function(socket) {
 
   console.log("emitting 'identify' for socket " + socket.id);
   socket.emit('identify', user);
-  console.log("broadcasting 'connect' for socket " + socket.id);
+  console.log("broadcasting 'new user' for socket " + socket.id);
+  socket.broadcast.emit('new user', user);
   sockets_by_name[user['name']] = socket.id;
   sockets[socket.id] = user;
   console.log("Sockets I know of after connect:");
