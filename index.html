@@ -46,6 +46,14 @@
       socket.on('name change', function(incoming) {
         $('#messages').append($('<li>').text(incoming.old_name + " is now known as " + incoming.new_name));
       });
+
+      socket.on('name list', function(incoming) {
+        var names = [];
+        for (var name in incoming) {
+          names.push(name);
+        }
+        $('#messages').append($('<li>').append($('<p>').text('Names in chat: ' + names.join(',  '))));
+      });
     });
   </script>
   <ul id="messages"></ul>

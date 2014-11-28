@@ -54,6 +54,7 @@ io.on('connection', function(socket) {
   socket.on('chat message', function(msg) {
     console.log('chat message "' + msg + '" received from socket ' + socket.id + '; emitting chat message.');
     var name_command = "/name ";
+    var names_command = "/names";
     if (msg.slice(0, name_command.length) == name_command && msg.length > name_command.length) {
       var new_name = msg.slice(name_command.length, msg.length);
       var old_name = sockets[socket.id]['name'];
@@ -61,6 +62,8 @@ io.on('connection', function(socket) {
       sockets_by_name[new_name] = socket.id;
       sockets[socket.id]['name'] = new_name;
       io.emit('name change', {'old_name': old_name, 'new_name': new_name});
+    } else if (msg == names_command) {
+      socket.emit('name list', sockets_by_name);
     } else {
       io.emit(
         'chat message', {
