@@ -15,6 +15,7 @@ Now you, too, can say things. In places. That's right, you can say them using So
 Actually, that's probably not a very reasonable idea. It's pretty much just the suggested code from http://socket.io/get-started/chat/, plus some of the keener-addons toward the bottom. It'll grow some more of those as time goes on. But then it'll be dead. So dead, not even a genesis device could bring it back.
 
 I sincerely hope no one has read this, and I'm sorry if you did,
+
 Wyatt Carss
 
 ----
