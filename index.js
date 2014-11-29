@@ -3,7 +3,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var moment = require('moment');
 
-var sockets = {};
+var users = {};
 var sockets_by_name = {};
 
 console.logCopy = console.log.bind(console);
@@ -35,19 +35,19 @@ io.on('connection', function(socket) {
   console.log("broadcasting 'new user' for socket " + socket.id);
   socket.broadcast.emit('new user', user);
   sockets_by_name[user['name']] = socket.id;
-  sockets[socket.id] = user;
-  console.log("Sockets I know of after connect:");
-  console.log(sockets);
+  users[socket.id] = user;
+  console.log("Users I know of after connect:");
+  console.log(users);
   console.log("Names I know of after connect:");
   console.log(sockets_by_name);
 
   socket.on('disconnect', function() {
     console.log('"disconnect" received from client ' + socket.id + '; emitting "disconnect".');
-    io.emit("disconnect", sockets[socket.id]);
-    delete sockets_by_name[sockets[socket.id]['name']];
-    delete sockets[socket.id];
-    console.log("Sockets I know of after disconnect:");
-    console.log(sockets);
+    io.emit("disconnect", users[socket.id]);
+    delete sockets_by_name[users[socket.id]['name']];
+    delete users[socket.id];
+    console.log("Users I know of after disconnect:");
+    console.log(users);
     console.log("Names I know of after disconnect:");
     console.log(sockets_by_name);
   });
@@ -58,10 +58,10 @@ io.on('connection', function(socket) {
     var names_command = "/names";
     if (msg.slice(0, name_command.length) == name_command && msg.length > name_command.length) {
       var new_name = msg.slice(name_command.length, msg.length);
-      var old_name = sockets[socket.id]['name'];
+      var old_name = users[socket.id]['name'];
       delete sockets_by_name[old_name];
       sockets_by_name[new_name] = socket.id;
-      sockets[socket.id]['name'] = new_name;
+      users[socket.id]['name'] = new_name;
       io.emit(
         'name change', {
           'old_name': old_name,
@@ -74,7 +74,7 @@ io.on('connection', function(socket) {
       io.emit(
         'chat message', {
           message: msg,
-          user: sockets[socket.id]
+          user: users[socket.id]
         }
       );
     }
