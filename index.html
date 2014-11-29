@@ -19,10 +19,14 @@
   <script>
     $(function() {
       var socket = io();
+      var you = {};
+
       $('form').submit(function() {
-        socket.emit('chat message', $('#m').val());
-        console.log('Form Submitted! Emitting "' + $('#m').val() + '" as a chat message!');
+        var message = $('#m').val();
+        socket.emit('chat message', message);
+        console.log('Form Submitted! Emitting "' + message + '" as a chat message!');
         $('#m').val('');
+        $('#messages').append($('<li>').text(you.name + ": " + message));
         return false;
       });
 
@@ -30,6 +34,7 @@
         console.log('identified as: ' + incoming.id);
         console.log('using name: ' + incoming.name);
         console.log(incoming);
+        you = incoming;
       });
 
       socket.on('disconnect', function(incoming) {

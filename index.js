@@ -62,6 +62,7 @@ io.on('connection', function(socket) {
       delete sockets_by_name[old_name];
       sockets_by_name[new_name] = socket.id;
       users[socket.id]['name'] = new_name;
+      socket.emit('identify', users[socket.id]);
       io.emit(
         'name change', {
           'old_name': old_name,
@@ -71,7 +72,7 @@ io.on('connection', function(socket) {
     } else if (msg == names_command) {
       socket.emit('name list', sockets_by_name);
     } else {
-      io.emit(
+      socket.broadcast.emit(
         'chat message', {
           message: msg,
           user: users[socket.id]
