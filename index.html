@@ -32,9 +32,9 @@
         console.log(incoming);
       });
 
-      socket.on('disconnect', function(msg) {
+      socket.on('disconnect', function(incoming) {
         console.log("Disconnect received! Appending disconnect message to display!");
-        $('#messages').append($('<li>').text(msg));
+        $('#messages').append($('<li>').text(incoming.name + " disconnected."));
       });
 
       socket.on('chat message', function(incoming) {

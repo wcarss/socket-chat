@@ -43,7 +43,7 @@ io.on('connection', function(socket) {
 
   socket.on('disconnect', function() {
     console.log('"disconnect" received from client ' + socket.id + '; emitting "disconnect".');
-    io.emit("disconnect", "User " + sockets[socket.id]['name'] + " disconnected.");
+    io.emit("disconnect", user);
     delete sockets_by_name[sockets[socket.id]['name']];
     delete sockets[socket.id];
     console.log("Sockets I know of after disconnect:");
