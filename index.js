@@ -62,7 +62,12 @@ io.on('connection', function(socket) {
       delete sockets_by_name[old_name];
       sockets_by_name[new_name] = socket.id;
       sockets[socket.id]['name'] = new_name;
-      io.emit('name change', {'old_name': old_name, 'new_name': new_name});
+      io.emit(
+        'name change', {
+          'old_name': old_name,
+          'new_name': new_name
+        }
+      );
     } else if (msg == names_command) {
       socket.emit('name list', sockets_by_name);
     } else {
