@@ -56,6 +56,7 @@ io.on('connection', function(socket) {
     console.log('chat message "' + msg + '" received from socket ' + socket.id + '; emitting chat message.');
     var name_command = "/name ";
     var names_command = "/names";
+    var whisper_command = "/whisper "
     if (msg.slice(0, name_command.length) == name_command && msg.length > name_command.length) {
       var new_name = msg.slice(name_command.length, msg.length);
       var old_name = users[socket.id]['name'];
@@ -71,6 +72,16 @@ io.on('connection', function(socket) {
       );
     } else if (msg == names_command) {
       socket.emit('name list', sockets_by_name);
+    } else if (msg.slice(0, whisper_command.length) == whisper_command && msg.length > whisper_command.length) {
+      var command_parts = msg.split(" ");
+      var recipient = command_parts[1];
+      var message = command_parts.slice(2, command_parts.length).join(" ");
+      io.to(sockets_by_name[recipient]).emit(
+        'whisper', {
+          message: message,
+          user: user
+        }
+      );
     } else {
       socket.broadcast.emit(
         'chat message', {

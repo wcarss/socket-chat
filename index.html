@@ -48,6 +48,10 @@
         $('#messages').append($('<li>').text(incoming.user.name + ": " + incoming.message));
       });
 
+      socket.on('whisper', function(incoming) {
+        $('#messages').append($('<li>').text(incoming.user.name + " whispers to you: " + incoming.message));
+      });
+
       socket.on('new user', function(incoming) {
         $('#messages').append($('<li>').text(incoming.name + " has joined the chat."));
       });
